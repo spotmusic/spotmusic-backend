@@ -1,6 +1,7 @@
-Flask
+flask
 flask-wtf
 flask-cors
 PyMySQL
 cryptography
 gunicorn
+mock

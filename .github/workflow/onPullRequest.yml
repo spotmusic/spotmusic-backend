@@ -21,13 +21,13 @@ jobs:
       - name: Install Requirements
         run:  pip install -r requirements.txt
 
-#  Tests:
-#    needs: [ InstallDeps ]
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Unit Test
-#        run: python -m unittest -v test
+  Tests:
+    needs: [ InstallDeps ]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Unit Test
+        run: python -m unittest -v test
 
 #  SonarCloud:
 #    needs: [ InstallDeps ]
@@ -44,7 +44,7 @@ jobs:
 #          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   BuildImage:
-    needs: [ InstallDeps ] # todo: add Tests and SonarCloud
+    needs: [ InstallDeps, Tests ] # todo: add SonarCloud
     name: Build
     runs-on: ubuntu-latest
     steps:
