@@ -1,0 +1,60 @@
+name: On Pull Request
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  InstallDeps:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install Requirements
+        run:  pip install -r requirements.txt
+
+#  Tests:
+#    needs: [ InstallDeps ]
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Unit Test
+#        run: python -m unittest -v test
+
+#  SonarCloud:
+#    needs: [ InstallDeps ]
+#    name: SonarCloud
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 0
+#      - name: SonarCloud Scan
+#        uses: SonarSource/sonarcloud-github-action@master
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  BuildImage:
+    needs: [ InstallDeps ] # todo: add Tests and SonarCloud
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      #      - name: New Relic License
+      #        run: |
+      #          sed -i "s/licensekey/${{ secrets.NEW_RELIC_LICENSE_KEY }}/g" Dockerfile
+
+      - name: Build Image
+        run: |
+          docker build -t ${{ secrets.ARTIFACT_REGISTRY }}/backend:latest .
