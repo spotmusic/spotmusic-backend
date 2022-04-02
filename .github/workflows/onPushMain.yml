@@ -82,11 +82,11 @@ jobs:
 #        run: |
 #          docker push ${{ secrets.ARTIFACT_REGISTRY }}/backend:latest
 
- Deploy:
-   needs: BuildAndPushImage
-   runs-on: ubuntu-latest
+  Deploy:
+    needs: BuildAndPushImage
+    runs-on: ubuntu-latest
 
-   steps:
+    steps:
      - name: Checkout Repo
        uses: actions/checkout@v2
 
